@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>StudyFlow AI</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #0f172a;
+            color: white;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 40px;
+        }
+
+        h1 {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+
+        input, select {
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            margin: 5px;
+            width: 60%;
+        }
+
+        button {
+            padding: 12px 18px;
+            background: #3b82f6;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+        }
+
+        .card {
+            background: #1e293b;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 15px;
+        }
+
+        .insight {
+            background: #0ea5e9;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>🚀 StudyFlow AI</h1>
+    <p class="subtitle">Your personal AI study companion</p>
+
+    <form method="POST">
+        <input type="text" name="topic" placeholder="Try: gravity, cells, acids..." required>
+
+        <select name="difficulty">
+            <option value="">Auto</option>
+            <option value="easy">Easy</option>
+            <option value="medium">Medium</option>
+            <option value="hard">Hard</option>
+        </select>
+
+        <label>
+            <input type="checkbox" name="exam_mode"> Exam Mode
+        </label>
+
+        <br><br>
+        <button type="submit">Generate</button>
+    </form>
+
+    {% if insight %}
+    <div class="insight">
+        <p>🔥 {{ insight }}</p>
+        <p>👉 {{ recommendation }}</p>
+    </div>
+    {% endif %}
+
+    {% if result %}
+
+    <div class="card">
+        <h2>Summary</h2>
+        <p>{{ result.summary }}</p>
+    </div>
+
+    {% if not exam_mode %}
+    <div class="card">
+        <h2>Key Points</h2>
+        <ul>
+            {% for p in result.points %}
+                <li>{{ p }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="card">
+        <h2>Flashcards</h2>
+        {% for card in result.flashcards %}
+            <p><b>Q:</b> {{ card.q }}<br><b>A:</b> {{ card.a }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <div class="card">
+        <h2>Quiz</h2>
+        {% for q in result.questions %}
+            <p>{{ q }}</p>
+            <input type="text"><br><br>
+        {% endfor %}
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>
